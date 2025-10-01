@@ -2,18 +2,17 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("kotlin-kapt")
-    id("com.google.gms.google-services")
+    alias(libs.plugins.google.tools.ksp)
     id("com.google.dagger.hilt.android")
 }
 
 android {
     namespace = "com.codewithdipesh.scaleuptask"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.codewithdipesh.scaleuptask"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -60,16 +59,17 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     //daggerhilt
-    implementation("com.google.dagger:hilt-android:2.56.1")
-    kapt("com.google.dagger:hilt-compiler:2.56.1")
+    implementation("com.google.dagger:hilt-android:2.53")
+    ksp("com.google.dagger:hilt-android-compiler:2.53")
+    ksp("androidx.hilt:hilt-compiler:1.0.0")
+
+    //firebase
+    implementation(platform("com.google.firebase:firebase-bom:34.3.0"))
+    implementation("com.google.firebase:firebase-auth")
 
     //navigation
     implementation("androidx.navigation:navigation-compose:2.8.9")
 
-    //firebase auth
-    implementation(platform("com.google.firebase:firebase-bom:34.3.0"))
-    implementation("com.google.firebase:firebase-auth")
-
     //phone number country picker
-    implementation("io.github.joelkanyi:komposecountrycodepicker:<latest-version>")
+    implementation("io.github.joelkanyi:komposecountrycodepicker:1.4.6")
 }

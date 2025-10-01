@@ -16,13 +16,12 @@ import kotlinx.coroutines.tasks.await
 import java.util.concurrent.TimeUnit
 
 class AuthRepositoryImpl(
-    private val auth : FirebaseAuth
+    private val auth: FirebaseAuth
 ): AuthRepository {
     @RequiresApi(Build.VERSION_CODES.N)
     override suspend fun sendOtp(
         phoneNumber: String,
-        activity: Activity,
-        resendToken: PhoneAuthProvider.ForceResendingToken?
+        activity: Activity
     ): Flow<AuthResult> = callbackFlow {
         //loading
         trySend(AuthResult.Loading)
@@ -38,11 +37,9 @@ class AuthRepositoryImpl(
                         trySend(AuthResult.Error(exception.message ?: "Sign in failed"))
                     }
             }
-
             override fun onVerificationFailed(p0: FirebaseException) {
                 trySend(AuthResult.Error(p0.message ?: "Verification failed"))
             }
-
             override fun onCodeSent(verificationId: String, p1: PhoneAuthProvider.ForceResendingToken) {
                 super.onCodeSent(verificationId, p1)
                 trySend(AuthResult.CodeSent(verificationId))
@@ -55,12 +52,9 @@ class AuthRepositoryImpl(
             .setTimeout(60L, TimeUnit.SECONDS)
             .setActivity(activity)
             .setCallbacks(callback) // OnVerificationStateChangedCallbacks
+            .build()
 
-        //for resending only
-        resendToken?.let {
-            options.setForceResendingToken(it)
-        }
-        PhoneAuthProvider.verifyPhoneNumber(options.build())
+        PhoneAuthProvider.verifyPhoneNumber(options)
     }
 
     override suspend fun verifyOtp(
