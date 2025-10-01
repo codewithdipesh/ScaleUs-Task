@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
@@ -55,6 +56,10 @@ class AuthRepositoryImpl(
             .build()
 
         PhoneAuthProvider.verifyPhoneNumber(options)
+
+        awaitClose {
+            close()
+        }
     }
 
     override suspend fun verifyOtp(

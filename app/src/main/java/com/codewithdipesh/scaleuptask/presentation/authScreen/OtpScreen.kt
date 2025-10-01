@@ -2,18 +2,21 @@ package com.codewithdipesh.scaleuptask.presentation.authScreen
 
 import android.app.Activity
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.LocalAutofillHighlightColor
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -23,8 +26,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,13 +43,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.codewithdipesh.scaleuptask.domain.model.AuthResult
+import com.codewithdipesh.scaleuptask.presentation.authScreen.elements.AnimatedOtpField
 import com.codewithdipesh.scaleuptask.presentation.navigation.Screen
 import com.joelkanyi.jcomposecountrycodepicker.component.KomposeCountryCodePicker
 import com.joelkanyi.jcomposecountrycodepicker.component.rememberKomposeCountryCodePickerState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun SignUpScreen(
+fun OtpScreen(
     viewModel: AuthViewModel,
     modifier: Modifier = Modifier,
     navController: NavController
@@ -51,25 +59,38 @@ fun SignUpScreen(
     val state by viewModel.authState.collectAsState()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val countryCodePickerState = rememberKomposeCountryCodePickerState(
-        showCountryCode = true,
-        showCountryFlag = true,
-        defaultCountryCode = "in"
-    )
+    var isError by rememberSaveable { mutableStateOf(false) }
 
+    BackHandler {
+        navController.popBackStack()
+        viewModel.clearOtp()
+    }
+
+    //timer
+    LaunchedEffect(Unit) {
+        viewModel.runTimer()
+    }
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
             when (event) {
-                is AuthResult.CodeSent -> {
-                    navController.navigate(Screen.OtpScreen.path)
-                }
                 is AuthResult.Error -> {
                     scope.launch {
-                        Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                        isError = true
+                        delay(2000) //a red bounce effect
+                        isError = false
                     }
                 }
-                AuthResult.Loading -> {}
-                is AuthResult.Success -> {}
+                is AuthResult.Success -> {
+                    //home screen
+                    scope.launch {
+                        Toast.makeText(context, "Logged In Successfully", Toast.LENGTH_SHORT).show()
+//                        navController.navigate(Screen.HomeScreen.route)
+                    }
+                }
+                is AuthResult.CodeSent ->{
+                    viewModel.runTimer()
+                }
+                else -> {}
             }
         }
     }
@@ -88,85 +109,73 @@ fun SignUpScreen(
                     .padding(innerPadding)
                     .padding(horizontal = 24.dp)
                     .padding(top = 100.dp),
-                horizontalAlignment = Alignment.Start,
+                horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top
             ){
                 //title
                 Text(
-                    text = "Scaling Ideas into Impactful Digital Solutions",
+                    text = "Verify Phone",
                     style = TextStyle(
                         color = MaterialTheme.colorScheme.onBackground,
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                )
-                Spacer(Modifier.height(8.dp))
-                //small line
-                Text(
-                    text = "Create your account",
-                    style = TextStyle(
-                        color = MaterialTheme.colorScheme.onBackground.copy(0.5f),
-                        fontSize = 16.sp,
+                        fontSize = 22.sp,
                         fontWeight = FontWeight.Normal
                     )
                 )
-                Spacer(Modifier.height(40.dp))
-                //enter mobile
+                Spacer(Modifier.height(8.dp))
                 Text(
-                    text = "Enter your mobile number",
+                    text = "Code has been sent to ${state.phoneCountryCode+state.phoneNumber}",
                     style = TextStyle(
                         color = MaterialTheme.colorScheme.onBackground,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Normal
                     )
                 )
-                Spacer(Modifier.height(8.dp))
-                KomposeCountryCodePicker(
-                    state = countryCodePickerState,
-                    text = state.phoneNumber,
-                    onValueChange = {
-                        viewModel.enterPhoneNumber(it, countryCodePickerState.getCountryPhoneCode())
+                Spacer(Modifier.height(24.dp))
+                AnimatedOtpField(
+                    onOtpEntered = {
+                        viewModel.enterOtp(it)
                     },
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = Color.LightGray.copy(0.5f),
-                        unfocusedContainerColor = Color.LightGray.copy(0.5f),
-                        focusedIndicatorColor = MaterialTheme.colorScheme.primary
-                    ),
-                    placeholder = {
+                    isError = isError
+                )
+                Spacer(Modifier.height(32.dp))
+                Text(
+                    text = "Didn't receive the code?",
+                    style = TextStyle(
+                        color = MaterialTheme.colorScheme.onBackground,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Normal
+                    )
+                )
+                Spacer(Modifier.height(8.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ){
+                    Text(
+                        text = "Resend Code ",
+                        style = TextStyle(
+                            color = if(state.resendTimer == 0) MaterialTheme.colorScheme.primary
+                                   else MaterialTheme.colorScheme.onBackground.copy(alpha =0.5f),
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Normal
+                        ),
+                        modifier = Modifier.clickable {
+                            if(state.resendTimer == 0) {
+                                viewModel.resendVerificationCode(context as Activity)
+                            }
+                        }
+                    )
+                    if(state.resendTimer != 0) {
                         Text(
-                            text = "00000 00000",
+                            text = "${state.resendTimer/60}m ${state.resendTimer%60}s",
                             style = TextStyle(
-                                color = MaterialTheme.colorScheme.onBackground.copy(0.4f),
-                                fontSize = 18.sp,
+                                color = MaterialTheme.colorScheme.onBackground,
+                                fontSize = 16.sp,
                                 fontWeight = FontWeight.Normal
                             )
                         )
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-
-                )
-                Spacer(Modifier.height(8.dp))
-                Text(
-                    text = "Existing User?",
-                    style = TextStyle(
-                        color = MaterialTheme.colorScheme.primary,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Normal,
-                        textAlign = TextAlign.End
-                    ),
-                    modifier = Modifier.fillMaxWidth()
-                        .clickable(
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() }
-                        ){
-                            navController.navigate(Screen.Login.path){
-                                popUpTo(Screen.Login.path)
-                                launchSingleTop = true
-                            }
-                            viewModel.clearNumber()
-                        }
-                )
+                    }
+                }
 
             }
 
@@ -179,10 +188,10 @@ fun SignUpScreen(
                     .height(50.dp)
                     .padding(horizontal = 24.dp)
                     .clip(RoundedCornerShape(10.dp))
-                    .background(MaterialTheme.colorScheme.primary)
+                    .background(MaterialTheme.colorScheme.primary.copy(alpha = if(state.otp.length == 6) 1f else 0.5f))
                     .clickable{
-                        if(!state.isLoading){
-                            viewModel.sendVerificationCode(context as Activity)
+                        if(state.otp.length == 6){
+                            viewModel.verifyOtp()
                         }
                     },
                 contentAlignment = Alignment.Center
@@ -191,7 +200,7 @@ fun SignUpScreen(
                     CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary)
                 }else{
                     Text(
-                        text = "Sign Up",
+                        text = "Confirm",
                         style = TextStyle(
                             color = MaterialTheme.colorScheme.onPrimary,
                             fontSize = 18.sp,

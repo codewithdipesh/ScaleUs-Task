@@ -5,16 +5,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import com.codewithdipesh.scaleuptask.presentation.authScreen.AuthViewModel
 //import com.codewithdipesh.scaleuptask.presentation.authScreen.AuthViewModel
-import com.codewithdipesh.scaleuptask.presentation.authScreen.SignUpScreen
+import com.codewithdipesh.scaleuptask.presentation.navigation.AppNavHost
 import com.codewithdipesh.scaleuptask.ui.theme.ScaleUpTaskTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,7 +20,11 @@ class MainActivity : ComponentActivity() {
         val authViewModel by viewModels<AuthViewModel>()
         setContent {
             ScaleUpTaskTheme {
-                SignUpScreen(authViewModel)
+                val navController = rememberNavController()
+                AppNavHost(
+                    navController = navController,
+                    authViewModel = authViewModel
+                )
             }
         }
     }

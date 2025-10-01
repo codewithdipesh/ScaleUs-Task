@@ -43,7 +43,7 @@ import com.joelkanyi.jcomposecountrycodepicker.component.rememberKomposeCountryC
 import kotlinx.coroutines.launch
 
 @Composable
-fun SignUpScreen(
+fun SignInScreen(
     viewModel: AuthViewModel,
     modifier: Modifier = Modifier,
     navController: NavController
@@ -103,7 +103,7 @@ fun SignUpScreen(
                 Spacer(Modifier.height(8.dp))
                 //small line
                 Text(
-                    text = "Create your account",
+                    text = "LogIn your account",
                     style = TextStyle(
                         color = MaterialTheme.colorScheme.onBackground.copy(0.5f),
                         fontSize = 16.sp,
@@ -128,27 +128,17 @@ fun SignUpScreen(
                         viewModel.enterPhoneNumber(it, countryCodePickerState.getCountryPhoneCode())
                     },
                     colors = TextFieldDefaults.colors(
-                        focusedContainerColor = Color.LightGray.copy(0.5f),
-                        unfocusedContainerColor = Color.LightGray.copy(0.5f),
+                        focusedContainerColor = Color.LightGray,
+                        unfocusedContainerColor = Color.LightGray,
                         focusedIndicatorColor = MaterialTheme.colorScheme.primary
                     ),
-                    placeholder = {
-                        Text(
-                            text = "00000 00000",
-                            style = TextStyle(
-                                color = MaterialTheme.colorScheme.onBackground.copy(0.4f),
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Normal
-                            )
-                        )
-                    },
                     modifier = Modifier
                         .fillMaxWidth()
 
                 )
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    text = "Existing User?",
+                    text = "New User?",
                     style = TextStyle(
                         color = MaterialTheme.colorScheme.primary,
                         fontSize = 14.sp,
@@ -157,11 +147,11 @@ fun SignUpScreen(
                     ),
                     modifier = Modifier.fillMaxWidth()
                         .clickable(
-                            indication = null,
+                            indication = null, // disables effects of ripllingg
                             interactionSource = remember { MutableInteractionSource() }
                         ){
-                            navController.navigate(Screen.Login.path){
-                                popUpTo(Screen.Login.path)
+                            navController.navigate(Screen.Register.path){
+                                popUpTo(Screen.Register.path)
                                 launchSingleTop = true
                             }
                             viewModel.clearNumber()
@@ -182,7 +172,7 @@ fun SignUpScreen(
                     .background(MaterialTheme.colorScheme.primary)
                     .clickable{
                         if(!state.isLoading){
-                            viewModel.sendVerificationCode(context as Activity)
+                            viewModel.sendVerificationCode( context as Activity)
                         }
                     },
                 contentAlignment = Alignment.Center
@@ -191,7 +181,7 @@ fun SignUpScreen(
                     CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary)
                 }else{
                     Text(
-                        text = "Sign Up",
+                        text = "Sign In",
                         style = TextStyle(
                             color = MaterialTheme.colorScheme.onPrimary,
                             fontSize = 18.sp,
