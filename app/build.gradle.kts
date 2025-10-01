@@ -1,9 +1,9 @@
-import jdk.tools.jlink.resources.plugins
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -58,4 +58,17 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    //daggerhilt
+    implementation("com.google.dagger:hilt-android:2.56.1")
+    kapt("com.google.dagger:hilt-compiler:2.56.1")
+
+    //navigation
+    implementation("androidx.navigation:navigation-compose:2.8.9")
+
+    //firebase auth
+    implementation(platform("com.google.firebase:firebase-bom:34.3.0"))
+    implementation("com.google.firebase:firebase-auth")
+
+    //phone number country picker
+    implementation("io.github.joelkanyi:komposecountrycodepicker:<latest-version>")
 }
