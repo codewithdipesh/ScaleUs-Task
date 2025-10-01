@@ -3,7 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.tools.ksp)
-    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.google.hilt)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -59,9 +60,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     //daggerhilt
-    implementation("com.google.dagger:hilt-android:2.53")
-    ksp("com.google.dagger:hilt-android-compiler:2.53")
-    ksp("androidx.hilt:hilt-compiler:1.0.0")
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    ksp(libs.androidx.hilt.compiler)
 
     //firebase
     implementation(platform("com.google.firebase:firebase-bom:34.3.0"))
@@ -69,6 +70,7 @@ dependencies {
 
     //navigation
     implementation("androidx.navigation:navigation-compose:2.8.9")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     //phone number country picker
     implementation("io.github.joelkanyi:komposecountrycodepicker:1.4.6")

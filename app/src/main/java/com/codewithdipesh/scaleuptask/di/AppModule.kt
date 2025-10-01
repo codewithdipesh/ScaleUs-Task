@@ -2,6 +2,7 @@ package com.codewithdipesh.scaleuptask.di
 
 import com.codewithdipesh.scaleuptask.data.repo.AuthRepositoryImpl
 import com.codewithdipesh.scaleuptask.domain.repo.AuthRepository
+import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,8 +15,16 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRepo() : AuthRepository {
-        return AuthRepositoryImpl()
+    fun provideAuth() : FirebaseAuth {
+        return FirebaseAuth.getInstance()
+    }
+
+    @Provides
+    @Singleton
+    fun provideRepo(
+        auth: FirebaseAuth
+    ) : AuthRepository {
+        return AuthRepositoryImpl(auth)
     }
 
 }
