@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.codewithdipesh.scaleuptask" />
+                  <option name="mobileSdkAppId" value="1:938523780773:android:6b1f5bd77be953910fcf4c" />
+                  <option name="projectId" value="android-task-43c9e" />
+                  <option name="projectNumber" value="938523780773" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

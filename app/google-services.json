@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "938523780773",
+    "project_id": "android-task-43c9e",
+    "storage_bucket": "android-task-43c9e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:938523780773:android:6b1f5bd77be953910fcf4c",
+        "android_client_info": {
+          "package_name": "com.codewithdipesh.scaleuptask"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXMXYh1zoQQdbfnGI8eSaWNb2deOwqajE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
