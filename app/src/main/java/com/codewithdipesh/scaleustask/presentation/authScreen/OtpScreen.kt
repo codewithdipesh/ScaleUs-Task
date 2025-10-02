@@ -1,6 +1,7 @@
 package com.codewithdipesh.scaleustask.presentation.authScreen
 
 import android.app.Activity
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -64,6 +65,7 @@ fun OtpScreen(
     }
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
+            Log.d("AuthViewModel",event.toString())
             when (event) {
                 is AuthResult.Error -> {
                     scope.launch {

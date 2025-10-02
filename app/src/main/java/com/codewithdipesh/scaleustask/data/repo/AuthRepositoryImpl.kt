@@ -13,6 +13,7 @@ import com.google.firebase.auth.PhoneAuthProvider
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.tasks.await
 import java.util.concurrent.TimeUnit
 
 class AuthRepositoryImpl(
@@ -67,8 +68,8 @@ class AuthRepositoryImpl(
     ): AuthResult {
         return try {
             val credential = PhoneAuthProvider.getCredential(verificationId, otp)
-            val result = auth.signInWithCredential(credential)
-            AuthResult.Success(result.result.user?.uid ?: "")
+            val result = auth.signInWithCredential(credential).await()
+            AuthResult.Success(result.user?.uid ?: "")
         } catch (e: Exception) {
             AuthResult.Error(e.message ?: "Verification failed")
         }
