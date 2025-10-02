@@ -74,4 +74,7 @@ dependencies {
 
     //phone number country picker
     implementation("io.github.joelkanyi:komposecountrycodepicker:1.4.6")
+
+    //splash screen
+    implementation("androidx.core:core-splashscreen:1.0.0")
 }

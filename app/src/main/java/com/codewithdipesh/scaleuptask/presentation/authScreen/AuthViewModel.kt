@@ -13,6 +13,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -26,6 +27,17 @@ class AuthViewModel @Inject constructor(
     private val _uiEvent = Channel<AuthResult>(Channel.BUFFERED)
     val uiEvent = _uiEvent.receiveAsFlow()
 
+    init {
+        checkAuthState()
+    }
+
+    fun checkAuthState() {
+        _authState.update {
+            it.copy(
+                isVerified = repository.isUserLoggedIn()
+            )
+        }
+    }
 
     fun sendVerificationCode(activity: Activity) {
         viewModelScope.launch {

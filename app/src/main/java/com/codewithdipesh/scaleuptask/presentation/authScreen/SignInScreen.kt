@@ -128,10 +128,20 @@ fun SignInScreen(
                         viewModel.enterPhoneNumber(it, countryCodePickerState.getCountryPhoneCode())
                     },
                     colors = TextFieldDefaults.colors(
-                        focusedContainerColor = Color.LightGray,
-                        unfocusedContainerColor = Color.LightGray,
+                        focusedContainerColor = Color.LightGray.copy(0.5f),
+                        unfocusedContainerColor = Color.LightGray.copy(0.5f),
                         focusedIndicatorColor = MaterialTheme.colorScheme.primary
                     ),
+                    placeholder = {
+                        Text(
+                            text = "00000 00000",
+                            style = TextStyle(
+                                color = MaterialTheme.colorScheme.onBackground.copy(0.4f),
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Normal
+                            )
+                        )
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
 

@@ -11,6 +11,8 @@ import com.codewithdipesh.scaleuptask.presentation.authScreen.AuthViewModel
 import com.codewithdipesh.scaleuptask.presentation.authScreen.OtpScreen
 import com.codewithdipesh.scaleuptask.presentation.authScreen.SignInScreen
 import com.codewithdipesh.scaleuptask.presentation.authScreen.SignUpScreen
+import com.codewithdipesh.scaleuptask.presentation.authScreen.SplashScreen
+import com.codewithdipesh.scaleuptask.presentation.homescreen.HomeScreen
 
 @Composable
 fun AppNavHost(
@@ -21,7 +23,7 @@ fun AppNavHost(
 
     NavHost(
         navController = navController,
-        startDestination = Screen.Register.path,
+        startDestination = Screen.SplashScreen.path,
         enterTransition = {
             EnterTransition.None
         },
@@ -35,6 +37,12 @@ fun AppNavHost(
             ExitTransition.None
         },
     ){
+        composable(Screen.SplashScreen.path){
+            SplashScreen(
+                navController = navController,
+                viewModel = authViewModel
+            )
+        }
         composable(Screen.Register.path){
             SignUpScreen(
                 navController = navController,
@@ -51,6 +59,10 @@ fun AppNavHost(
             OtpScreen(
                 viewModel = authViewModel,
                 navController = navController
+            )
+        }
+        composable(Screen.HomeScreen.path){
+            HomeScreen(
             )
         }
     }

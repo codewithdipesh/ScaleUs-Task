@@ -76,7 +76,7 @@ fun OtpScreen(
                 is AuthResult.Error -> {
                     scope.launch {
                         isError = true
-                        delay(2000) //a red bounce effect
+                        delay(1000) //a red bounce effect
                         isError = false
                     }
                 }
