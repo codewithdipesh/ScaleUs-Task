@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace = "com.codewithdipesh.scaleuptask"
+    namespace = "com.codewithdipesh.scaleustask"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.codewithdipesh.scaleuptask"
+        applicationId = "com.codewithdipesh.scaleustask"
         minSdk = 23
         targetSdk = 35
         versionCode = 1

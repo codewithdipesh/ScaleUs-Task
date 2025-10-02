@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ScaleUp Task"
+rootProject.name = "ScaleUs Task"
 include(":app")
  
