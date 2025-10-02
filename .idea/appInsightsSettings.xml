@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AppInsightsSettings">
+    <option name="selectedTabId" value="Firebase Crashlytics" />
     <option name="tabSettings">
       <map>
         <entry key="Firebase Crashlytics">
@@ -8,8 +9,8 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.codewithdipesh.scaleuptask" />
-                  <option name="mobileSdkAppId" value="1:938523780773:android:6b1f5bd77be953910fcf4c" />
+                  <option name="appId" value="com.codewithdipesh.scaleustask" />
+                  <option name="mobileSdkAppId" value="1:938523780773:android:41097eee8b7b2af40fcf4c" />
                   <option name="projectId" value="android-task-43c9e" />
                   <option name="projectNumber" value="938523780773" />
                 </ConnectionSetting>

@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:938523780773:android:6b1f5bd77be953910fcf4c",
+        "mobilesdk_app_id": "1:938523780773:android:41097eee8b7b2af40fcf4c",
         "android_client_info": {
-          "package_name": "com.codewithdipesh.scaleuptask"
+          "package_name": "com.codewithdipesh.scaleustask"
         }
       },
       "oauth_client": [],

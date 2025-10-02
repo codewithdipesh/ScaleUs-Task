@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.codewithdipesh.scaleuptask.R
+import com.codewithdipesh.scaleustask.R
 import com.codewithdipesh.scaleustask.presentation.navigation.Screen
 import kotlinx.coroutines.delay
 
